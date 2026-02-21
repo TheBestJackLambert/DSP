@@ -72,5 +72,8 @@ def arctan(x, y):
   return a
 
 
-def sine(x, freq, phase, amp):
-    return sin(x * 2 * pi * 1/freq + phase) * amp
+def sine(x, freq, N, phase, amp):
+    return sin(x * 2 * pi * freq / N + phase) * amp
+
+def cosine(x, freq, N, phase, amp):
+    return cos(x * 2 * pi * freq / N + phase) * amp
