@@ -77,3 +77,18 @@ def sine(x, freq, N, phase, amp):
 
 def cosine(x, freq, N, phase, amp):
     return cos(x * 2 * pi * freq / N + phase) * amp
+
+def square(x, freq, N, phase, amp):
+  a = 0
+  for i in range(1, 250):
+    a += sin(2 * pi * (2 * i - 1) * freq * x / N) / (2 * i - 1)
+  return a * 4 * amp / pi
+
+def saw(x, freq, N, phase, amp):
+  a = 0
+  for i in range(1, 250):
+    if i % 2 == 0:
+      a -= sin(2 * pi * x * i * freq / N) / (i)
+    elif i % 2 == 1:
+      a += sin(2 * pi * x * i * freq / N) / (i)
+  return a * 2 * amp / pi
