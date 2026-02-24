@@ -1,4 +1,8 @@
 pi = 3.14159265359159
+
+#defines amount of iterations (recommended 25)
+iterations = 25
+
 #factorial
 def fac(x):
   y = 1
@@ -8,17 +12,19 @@ def fac(x):
 
 #cosine function
 def cos(x):
+  global iterations 
   x = wrap(x)
   y = 0
-  for i in range(25):
+  for i in range(iterations):
     y += 1/(fac(2*i)) * x ** (2*i) * (-1)**i
   return y
 
 #sine function
 def sin(x):
+  global iterations
   x = wrap(x)
   y = 0
-  for i in range(25):
+  for i in range(iterations):
     y += 1/(fac(1 + 2*i)) * x ** (2*i + 1) * (-1)**i
   return y
 
@@ -40,7 +46,7 @@ def wrap(a):
 
 #inverse tangent
 def arctan(x, y):
-
+  global iterations
   #if denominator is zero returns corresponding angle
   if x == 0:
     if y > 0: return (pi/2)
@@ -60,7 +66,7 @@ def arctan(x, y):
   a = 0.0
 
   #does taylor series 20 times
-  for i in range(20):
+  for i in range(iterations):
     a += ((-1)**i) * (t**(2*i + 1)) / (2*i + 1)
 
   #adjusts for sign
@@ -80,15 +86,19 @@ def cosine(x, freq, N, phase, amp):
 
 def square(x, freq, N, phase, amp):
   a = 0
-  for i in range(1, 250):
+  global iterations
+  for i in range(1, 10 * iterations):
     a += sin(2 * pi * (2 * i - 1) * freq * x / N) / (2 * i - 1)
   return a * 4 * amp / pi
 
 def saw(x, freq, N, phase, amp):
+  global iterations
   a = 0
-  for i in range(1, 250):
+  for i in range(1, 10 * iterations):
     if i % 2 == 0:
       a -= sin(2 * pi * x * i * freq / N) / (i)
     elif i % 2 == 1:
       a += sin(2 * pi * x * i * freq / N) / (i)
   return a * 2 * amp / pi
+
+
