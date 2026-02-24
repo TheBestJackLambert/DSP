@@ -154,52 +154,56 @@ def fftorganize(x):
         b[i + N // 2] = neven[1][i] - temp2
     return [a, b]
 
+#inverse fourier transform
 def ift(mag, phase):
+
+    #defines our variables
     signal = []
     length = len(mag)
+
+    #cycles through every x frequency
     for j in range(length):
         x = 0
+
+        #cycles through every x coordinate
         for i in range(len(mag)):
             x += mag[i] * trig.cos(i * j * 2 * trig.pi / length + phase[i])
         signal.append(x / length)
     return signal
 
+#noise removing function
 def denoise(x):
+
+    #defines variables
     N = len(x)
     mag, phase = fft(x)
     mean = 0
+
+    #finds average magnitude
     for i in mag:
         mean += i
     mean /= N
-    thresh = mean * 7
+
+    #creates threshold
+    thresh = mean * 7 #after running a program that cycles through many different frequencies and potential multipliers and determines which multiplier created a signal closest to the orignal, I found 7 to be optimal
+    
+    #creates variable for average magnitude of noise
     meanmag = 0
-    meanphase = 0
     count = 0
+
+    #cycles through all points, adds them to mean noise magnitude and then sets them to zero
     for i in range(N):
         if mag[i] < thresh:
             meanmag += mag[i]
             count += 1
             mag[i], phase[i] = 0, 0
     meanmag /= count
+
+    #subtracts mean noise magnitude from all frequencies remaining
     for i in range(N):
         if mag[i] > meanmag:
             mag[i] -= meanmag
+
+    #runs cleaned frequency and phase list through an IFT to find signal
     cleanx = ift(mag, phase)[:N]
     return cleanx
-
-length = 200
-x = []
-for i in range(length):
-    x.append(trig.sine(i, 3, length, 0, 25) + trig.cosine(i, 7, length, 0, 15))
-
-noisy = noise(x, .5)
-y = denoise(noisy)
-z = denoise(y)
-
-raw_error = 0
-clean_error = 0
-for i in range(len(x)):
-    raw_error += abs(y[i] - noisy[i])
-    clean_error += abs(z[i] - y[i])
-print("noisy:", raw_error)
-print("denoised:", clean_error)
