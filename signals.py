@@ -1,5 +1,4 @@
 import trig
-
 #random noise
 def noise(signal, loudness):
 
@@ -19,17 +18,8 @@ def noise(signal, loudness):
         noise[i] -= m/2
 
     #adjusts noise to not overpower signal
-    #finds average signal strength
-    mean = 0
-    for i in signal:
-        mean += i
-    mean = mean/len(signal)
-
-    #finds average distance from mean signal
-    nice= 0
-    for i in signal:
-        nice += abs(i - mean)
-    nice = nice/len(signal)
+    #finds stnadard deviation
+    nice = trig.sd(signal)
 
     #finds average magnitude of noise
     mean = 0
@@ -170,40 +160,3 @@ def ift(mag, phase):
             x += mag[i] * trig.cos(i * j * 2 * trig.pi / length + phase[i])
         signal.append(x / length)
     return signal
-
-#noise removing function
-def denoise(x):
-
-    #defines variables
-    N = len(x)
-    mag, phase = fft(x)
-    mean = 0
-
-    #finds average magnitude
-    for i in mag:
-        mean += i
-    mean /= N
-
-    #creates threshold
-    thresh = mean * 7 #after running a program that cycles through many different frequencies and potential multipliers and determines which multiplier created a signal closest to the orignal, I found 7 to be optimal
-    
-    #creates variable for average magnitude of noise
-    meanmag = 0
-    count = 0
-
-    #cycles through all points, adds them to mean noise magnitude and then sets them to zero
-    for i in range(N):
-        if mag[i] < thresh:
-            meanmag += mag[i]
-            count += 1
-            mag[i], phase[i] = 0, 0
-    meanmag /= count
-
-    #subtracts mean noise magnitude from all frequencies remaining
-    for i in range(N):
-        if mag[i] > meanmag:
-            mag[i] -= meanmag
-
-    #runs cleaned frequency and phase list through an IFT to find signal
-    cleanx = ift(mag, phase)[:N]
-    return cleanx

@@ -1,4 +1,36 @@
 pi = 3.14159265359159
+e = 2.718281828459045
+
+#standard deviation function
+def sd(x):
+  mean = 0
+  for i in x:
+    mean += i
+  mean /= len(x)
+  deviation = 0
+  for i in x:
+    deviation += (i - mean) ** 2
+  deviation /= len(x)
+  return deviation ** .5
+
+def correlation(x, y):
+  meanx = 0
+  meany = 0
+  N = len(x)
+  squaresum = 0
+  residual = 0
+  for i in range(N):
+    meanx += x[i]
+    meany += y[i]
+  meanx /= N
+  meany /= N
+  for i in range(N):
+    squaresum += (x[i] - meanx) ** 2
+    residual += (x[i] - y[i]) ** 2
+  fraction = residual / squaresum
+  if squaresum == 0:
+    return 0
+  return 1 - fraction
 
 #defines amount of iterations (recommended 25)
 iterations = 25
