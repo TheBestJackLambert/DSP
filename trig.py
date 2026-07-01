@@ -128,9 +128,9 @@ def saw(x, freq, N, phase, amp):
   a = 0
   for i in range(1, 10 * iterations):
     if i % 2 == 0:
-      a -= sin(2 * pi * x * i * freq / N) / (i)
+      a -= sin(2 * pi * x * i * freq / N + phase) / (i)
     elif i % 2 == 1:
-      a += sin(2 * pi * x * i * freq / N) / (i)
+      a += sin(2 * pi * x * i * freq / N + phase) / (i)
   return a * 2 * amp / pi
 
 

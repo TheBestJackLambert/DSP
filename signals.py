@@ -1,12 +1,12 @@
 import trig
 #random noise
-def noise(signal, loudness):
-
-    #defines noise parameters
-    seed = 51925
-    a = 987325234
-    c = 40871212
+def noise(signal, loudness, 
+    seed = 51925,
+    a = 987325234,
+    c = 40871212,
     m = 1767174
+    ):
+
     noise = [seed]
     noisy = []
 
@@ -158,5 +158,7 @@ def ift(mag, phase):
         #cycles through every x coordinate
         for i in range(len(mag)):
             x += mag[i] * trig.cos(i * j * 2 * trig.pi / length + phase[i])
+
         signal.append(x / length)
+
     return signal
